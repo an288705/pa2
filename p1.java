@@ -25,14 +25,6 @@ import java.io.IOException;
 //he declares that all have visited when count==N-1,
 //since leader doesn't have to eat cupcake to count himself
 
-// 1) Any guest could stop by and check whether the showroom’s door is open at any time and try to enter the room. While this would allow the guests to roam around the castle and enjoy the party, this strategy may also cause large crowds of eager guests to gather around the door. A particular guest wanting to see the vase would also have no guarantee that she or he will be able to do so and when.
-//this is the listening until an available room strat.
-// 2) The Minotaur’s second strategy allowed the guests to place a sign on the door indicating when the showroom is available. The sign would read “AVAILABLE” or “BUSY.” Every guest is responsible to set the sign to “BUSY” when entering the showroom and back to “AVAILABLE” upon exit. That way guests would not bother trying to go to the showroom if it is not available.
-//this is flag strat. its good but has waiting
-// 3) The third strategy would allow the quests to line in a queue. Every guest exiting the room was responsible to notify the guest standing in front of the queue that the showroom is available. Guests were allowed to queue multiple times.
-//queue good but has waiting
-// Which of these three strategies should the guests choose? Please discuss the advantages and disadvantages.
-
 class p1{
     public static AtomicBoolean occupied = new AtomicBoolean(false);
     public static AtomicBoolean cupcake = new AtomicBoolean(true);
