@@ -25,5 +25,64 @@ import java.util.concurrent.atomic.AtomicInteger;
 //we will be implementing strategy #2
 
 public class p2 {
-    
+    public static AtomicBoolean busy = new AtomicBoolean(false);
+    public static ArrayList<AtomicBoolean> seen = new ArrayList<AtomicBoolean>();
+    public static AtomicInteger idx= new AtomicInteger(0);
+    public static void main(String[] args)
+    {
+        ArrayList<Thread> threadList = new ArrayList<Thread>();
+        long t= System.currentTimeMillis();
+        long end = t+10000;
+        int N=8;
+
+        Runnable guest = ()->{
+            //thread can only access arr ele in its thread idx
+            //if not seen and cupcake is available, 
+            //eat cupcake and set seen to true
+            int threadIdx=idx.incrementAndGet()-1;
+            // System.out.println("thread "+threadIdx+" started");
+
+            while(true)
+            {
+                //getAndSet returns the previous value, which means that if prev was false,
+                //it immediately becomes true. if prev was true, setting it to true again wont matter
+                if(!busy.getAndSet(true)) 
+                {
+                    //available guarantees that the thread can get in the room, 
+                    //busy means that the thread is the ONLY thread in the room
+                    //System.out.println("thread "+threadIdx+" occupying room");
+                    //System.out.println(busy);
+                    if(!seen.get(threadIdx).get())
+                    {
+                        seen.get(threadIdx).getAndSet(true);
+                        System.out.println("thread "+threadIdx+" has seen the vase for first time");
+                        // System.out.println(seen);
+                        // System.out.println(cupcake);
+                    }
+                    //now leave room
+                    busy.getAndSet(false);
+                    //System.out.println("thread "+threadIdx+" left room");
+                    //System.out.println(available);
+                }
+                //System.out.println("thread "+threadIdx+" waiting");
+            }
+        };
+
+        System.out.println("The minotaur opened his showroom! It will only be open for 10 seconds\n");
+
+        for(int i=0;i<N;i++)
+        {
+            threadList.add(new Thread(guest));
+            seen.add(new AtomicBoolean(false));
+            threadList.get(i).start();          
+        }
+        
+        while(System.currentTimeMillis() < end) {
+            //keep main process running for 10 seconds
+        }
+
+        //kill the main process
+        System.out.println("\nThe minotaur has closed the showroom");
+        System.exit(0);
+    }
 }
