@@ -75,7 +75,7 @@ class p1{
         eaten.add(new AtomicBoolean(true));
         threadList.get(0).start();
 
-        Runnable prisoner = ()->{
+        Runnable guest = ()->{
             //thread can only access arr ele in its thread idx
             //if not eaten and cupcake is available, 
             //eat cupcake and set eaten to true
@@ -112,7 +112,7 @@ class p1{
 
         for(int i=1;i<N;i++)
         {
-            threadList.add(new Thread(prisoner));
+            threadList.add(new Thread(guest));
             available.add(false);
             eaten.add(new AtomicBoolean(false));
             threadList.get(i).start();          
